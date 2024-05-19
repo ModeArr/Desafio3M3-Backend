@@ -6,11 +6,10 @@ const getProductsCtrl = async(req, res) => {
     let query = {}
 
     if (req.query.status){
-        query = { status: req.query.status 
-        }
+        query = { status: req.query.status }
     }
 
-    if (req.query.category){//convierte la primera letra en mayuscula, TODO checar por que lo hice? arregalar
+    if (req.query.category){//convierte la primera letra en mayuscula
         query = { category: req.query.category.charAt(0).toUpperCase()
             + req.query.category.slice(1) }
     }
