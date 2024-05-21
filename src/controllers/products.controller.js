@@ -43,9 +43,9 @@ const addProductCtrl = async(req, res) => {
     productService.addProduct(newProduct)
         .then(result => {
             io.emit('product created', result);
-            return res.status(200).json(`Se subio correctamente el articulo con id: ${result._id}`);
+            return res.status(200).json({status: "success", product: result._doc});
         }).catch(err => {
-            res.status(400).json(err.message)
+            res.status(400).json({status: "error", message: err.message})
         });
 }
 

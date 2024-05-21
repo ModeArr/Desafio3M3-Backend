@@ -1,5 +1,5 @@
 paths:
-  /api/products/:
+  /api/products:
     get:
       summary: get all products with pagination
       tags:
@@ -10,11 +10,13 @@ paths:
           schema:
             type: number
           description: The number of page to return
+          default: 1
         - in: query
           name: limit
           schema:
             type: number
           description: The number of products to return per page
+          default: 5
         - in: query
           name: sort
           schema:
@@ -41,28 +43,94 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Product"
-        "400":
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status of the request
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                    description: array of products it contians
+                  totalPages:
+                    type: integer
+                    description: Total pages returned with the configuration
+                  prevPage: 
+                    type: integer
+                    escription: Number of the previous page
+                  nextPage:
+                    type: integer
+                    description: Number of the next page
+                  page:
+                    type: integer
+                    description:
+                  hasPrevPage:
+                    type: boolean
+                    description:
+                  hasNextPage:
+                    type: boolean
+                    description:
+                  prevLink:
+                    type: string
+                    format: uri
+                    description:
+                  nextLink:
+                    type: string
+                    format: uri
+                    description:
+        "400":    
           description: bad request
-  /api/pets/{pid}/:
-    delete:
-      summary: delete pets by id
+  /api/products/{pid}/:
+    get:
+      summary: Return the product of the id given
       tags:
-        - Pets
+        - Products
       parameters:
         - name: pid
           in: path
           required: true
-          description: id of pet
-          schema:
-            $type: ObjectId
+          description: id of the product
       responses:
         "200":
-          description: delete pet by id info
-        "500":
+          description: returns an array with the product object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "400":
           description: server side error
+  /api/products/:
+    post:
+      summary: Return the product of the id given
+      tags:
+        - Products
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    description: indicates if the creation was succesful
+                  product:
+                    $ref: '#/components/schemas/Product'
+          description: retruns an array with the product object
+        "400":
+          description: incates that the products has not been uploaded
+
+
 components:
   schemas:
     Product:
@@ -113,9 +181,18 @@ components:
         - category
         - owner
       example:
-        _id: 6f38b062-b913
-        name: shamu
-        specie: dog
-        birthDate: 2018-01-01
-        adopted: true
-        image: <binary>
+        "_id": "66466eaf30b04d3dd1c6bd38"
+        "title": "Tomate"
+        "description": "El tomate es rico en minerales esenciales, que nos ayudan a sentirnos fuertes y con energía."
+        "price": 587
+        "thumbnail": [
+          "https://firebasestorage.googleapis.com/v0/b/tienda-mastergym.appspot.com/o/Prouctmanager%2Ftomate.jpeg?alt=media&token=80320653-1e2b-41df-b737-02cb2996ac9e"
+        ]
+        "stock": 98
+        "code": 578921
+        "status": true
+        "category": "Verdura"
+        "owner": "662d90d4fba2929ccc5ac612"
+
+
+
